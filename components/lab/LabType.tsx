@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef } from "react";
 import type { LabPointer } from "./LabEngine";
+import { isTouchDevice } from "@/lib/pointer";
 import styles from "./LabType.module.css";
 
 const LINES = ["ANTONIO", "MARGIELA"];
@@ -55,6 +56,8 @@ export default function LabType({
     const halves = chars.map((c) => [c.children[0] as HTMLElement, c.children[1] as HTMLElement]);
     const st: LetterState[] = chars.map(() => ({ ox: 0, oy: 0, sx: 1, sy: 1, sk: 0, fr: 0, w: 0 }));
     let raf = 0;
+    // variar o peso da fonte recalcula o layout a cada quadro: só com mouse
+    const varyWeight = !isTouchDevice();
 
     const loop = () => {
       const R = Math.max(220, el.clientWidth * 0.2);
@@ -95,7 +98,7 @@ export default function LabType({
         total += s.w;
 
         ch.style.transform = `translate3d(${s.ox.toFixed(2)}px,${s.oy.toFixed(2)}px,0) skewX(${s.sk.toFixed(2)}deg) scale(${s.sx.toFixed(3)},${s.sy.toFixed(3)})`;
-        ch.style.fontWeight = String(Math.round(800 - s.w * 520));
+        if (varyWeight) ch.style.fontWeight = String(Math.round(800 - s.w * 520));
         const [top, bottom] = halves[i];
         top.style.transform = `translateX(${(-s.fr / 2).toFixed(2)}px)`;
         bottom.style.transform = `translateX(${(s.fr / 2).toFixed(2)}px)`;

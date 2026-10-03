@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { bindPointer, pointer } from "@/lib/pointer";
+import { bindPointer, isTouchDevice, pointer } from "@/lib/pointer";
 import styles from "./Hud.module.css";
 
 function useClock() {
@@ -37,9 +37,13 @@ export default function Hud({
 }) {
   const time = useClock();
   const coords = useRef<HTMLSpanElement>(null);
+  // definido após a montagem (evita divergência de hidratação)
+  const [touch, setTouch] = useState(false);
+  useEffect(() => setTouch(isTouchDevice()), []);
 
-  // coordenadas do ponteiro, atualizadas sem re-render
+  // coordenadas do ponteiro, atualizadas sem re-render — só com mouse
   useEffect(() => {
+    if (touch) return;
     bindPointer();
     let raf = 0;
     const loop = () => {
@@ -52,7 +56,7 @@ export default function Hud({
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [touch]);
 
   const pos = total > 1 ? active / (total - 1) : 0;
 
@@ -66,9 +70,11 @@ export default function Hud({
         <span>
           <i className={styles.dot} /> SYSTEM / ONLINE
         </span>
-        <span className={`dim ${styles.coords}`} ref={coords}>
-          X 0000 · Y 0000
-        </span>
+        {!touch && (
+          <span className={`dim ${styles.coords}`} ref={coords}>
+            X 0000 · Y 0000
+          </span>
+        )}
         {devMode && <span className="accent">BLUEPRINT / ON</span>}
       </div>
       <div className={styles.bl} data-exit>
@@ -79,7 +85,7 @@ export default function Hud({
         <span>
           STATUS / <span className={styles.available}>AVAILABLE</span>
         </span>
-        <span className="dim">{keyboard ? "INPUT / KEYBOARD" : "INPUT / POINTER"}</span>
+        <span className="dim">{keyboard ? "INPUT / KEYBOARD" : touch ? "INPUT / TOUCH" : "INPUT / POINTER"}</span>
       </div>
 
       {/* régua lateral: o marcador acompanha o item selecionado */}

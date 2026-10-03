@@ -46,8 +46,8 @@ export default function Lab() {
       {
         mobile,
         reduced: prefersReducedMotion(),
-        density: mobile ? 900 : cores <= 4 ? 1700 : 2600,
-        nodes: mobile ? 80 : 160,
+        density: mobile ? 700 : cores <= 4 ? 1700 : 2600,
+        nodes: mobile ? 70 : 160,
       },
       (s, frame) => {
         if (frame % 4) return; // painel: ~15 atualizações/s bastam

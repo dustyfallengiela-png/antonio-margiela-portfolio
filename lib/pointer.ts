@@ -24,5 +24,12 @@ export function bindPointer() {
 export const isFinePointer = () =>
   typeof window !== "undefined" && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
+/**
+ * Dispositivo de toque (sem mouse de precisão): celulares e tablets.
+ * É o inverso exato de isFinePointer — no desktop com mouse, sempre `false`,
+ * então nenhum caminho de código do desktop muda.
+ */
+export const isTouchDevice = () => typeof window !== "undefined" && !isFinePointer();
+
 export const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

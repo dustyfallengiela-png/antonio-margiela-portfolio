@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import type { SectionId } from "@/lib/content";
-import { prefersReducedMotion } from "@/lib/pointer";
+import { isTouchDevice, prefersReducedMotion } from "@/lib/pointer";
 import { scrollToSection, setLenis } from "@/lib/scroll";
 import Header from "./Header";
 import Manifesto from "./Manifesto";
@@ -21,9 +21,14 @@ export default function MainContent({ initialTarget, ready }: { initialTarget: S
   // Smooth scroll (Lenis) sincronizado com o ticker do GSAP
   useEffect(() => {
     const reduced = prefersReducedMotion();
+    const touch = isTouchDevice();
     let lenis: Lenis | null = null;
     const tick = (t: number) => lenis?.raf(t * 1000);
-    if (!reduced) {
+    if (touch) {
+      // celular: rolagem nativa (mais fluida que smooth scroll sob o dedo) e
+      // seções fixadas estáveis quando a barra de endereço aparece/some
+      ScrollTrigger.config({ ignoreMobileResize: true });
+    } else if (!reduced) {
       lenis = new Lenis({ lerp: 0.1, smoothWheel: true });
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add(tick);

@@ -299,7 +299,8 @@
 /* ---------- mobile: comportamento próprio ---------- */
 @media (max-width: 720px) {
   .stageWrap {
-    padding: 56px var(--gutter) 52px;
+    /* base maior: o último item nunca fica sob o HUD (BRAZIL / hora) em telas baixas */
+    padding: 56px var(--gutter) 80px;
   }
   .fit {
     transform-origin: 50% 40%;
@@ -361,5 +362,14 @@
   }
   .vignette {
     background: linear-gradient(180deg, rgba(10, 10, 9, 0.25), rgba(10, 10, 9, 0.85) 45%, rgba(10, 10, 9, 0.92));
+  }
+}
+
+/* ---------- toque: sem parallax por cursor, sem camadas de GPU ociosas ---------- */
+@media not all and (hover: hover) and (pointer: fine) {
+  .bg,
+  .stage,
+  .globe {
+    will-change: auto;
   }
 }

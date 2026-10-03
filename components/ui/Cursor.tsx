@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { bindPointer, isFinePointer, pointer } from "@/lib/pointer";
 import styles from "./Cursor.module.css";
 
@@ -21,9 +21,12 @@ export default function Cursor() {
   const cross = useRef<HTMLDivElement>(null);
   const frame = useRef<HTMLDivElement>(null);
   const label = useRef<HTMLSpanElement>(null);
+  // só existe com mouse de precisão: em toque, nem o DOM nem o loop são criados
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => setEnabled(isFinePointer()), []);
 
   useEffect(() => {
-    if (!isFinePointer()) return;
+    if (!enabled) return;
     bindPointer();
     const root = document.documentElement;
     root.classList.add("has-cursor");
@@ -68,7 +71,9 @@ export default function Cursor() {
       root.removeEventListener("mouseleave", leave);
       root.removeEventListener("mouseenter", enter);
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
     <div className={styles.root} aria-hidden="true">

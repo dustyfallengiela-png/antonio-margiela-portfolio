@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { MENU, menuExitLines, type MenuItem, type SectionId } from "@/lib/content";
-import { bindPointer, pointer, prefersReducedMotion } from "@/lib/pointer";
+import { bindPointer, isTouchDevice, pointer, prefersReducedMotion } from "@/lib/pointer";
 import { peekServiceFocus, setServiceFocus } from "@/lib/scroll";
 import Globe, { type GlobeMode } from "@/components/ui/Globe";
 import Scramble from "@/components/ui/Scramble";
@@ -175,7 +175,8 @@ export default function MainMenu({ onSelect, onExited, exitTo, locked }: Props) 
       }
       raf = requestAnimationFrame(loop);
     };
-    if (!reduced) raf = requestAnimationFrame(loop);
+    // parallax depende do mouse: em toque não há o que acompanhar, então não roda
+    if (!reduced && !isTouchDevice()) raf = requestAnimationFrame(loop);
     return () => {
       ctx.revert();
       cancelAnimationFrame(raf);
@@ -244,7 +245,8 @@ export default function MainMenu({ onSelect, onExited, exitTo, locked }: Props) 
           rotation: () => gsap.utils.random(-14, 14),
           scale: 1.5,
           opacity: 0,
-          filter: "blur(10px)",
+          // blur em 16 letras é o efeito mais caro para GPU de celular
+          filter: isTouchDevice() ? "none" : "blur(10px)",
           duration: 0.6,
           ease: "power3.in",
           stagger: { each: 0.012, from: "center" },

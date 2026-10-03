@@ -377,3 +377,15 @@
     width: 70vw;
   }
 }
+
+/* ---------- toque: mesmo visual, sem repintura contínua ----------
+   (inverso exato de "mouse de precisão": o desktop nunca entra aqui) */
+@media not all and (hover: hover) and (pointer: fine) {
+  .floor,
+  .scan {
+    animation: none;
+  }
+  .scan {
+    display: none;
+  }
+}

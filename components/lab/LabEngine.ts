@@ -97,7 +97,8 @@ export class LabEngine {
 
   resize() {
     const r = this.canvas.getBoundingClientRect();
-    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // celular: 1.5x já é nítido e reduz ~44% dos pixels desenhados por quadro
+    this.dpr = Math.min(window.devicePixelRatio || 1, this.opts.mobile ? 1.5 : 2);
     this.w = Math.max(1, r.width);
     this.h = Math.max(1, r.height);
     this.canvas.width = Math.round(this.w * this.dpr);
@@ -385,7 +386,7 @@ export class LabEngine {
       }
 
       for (const r of this.ripples) {
-        const age = now - r.t;
+        const age = Math.max(0, now - r.t); // relógios distintos (evento × quadro): nunca negativo
         const rr = age * 0.55;
         const dx = this.x[i] - r.x, dy = this.y[i] - r.y;
         const d = Math.hypot(dx, dy) || 1;
@@ -429,7 +430,7 @@ export class LabEngine {
 
     // anéis das ondas
     for (const r of this.ripples) {
-      const age = now - r.t;
+      const age = Math.max(0, now - r.t); // relógios distintos (evento × quadro): nunca negativo
       ctx.globalAlpha = Math.max(0, 0.5 * (1 - age / 1700));
       ctx.strokeStyle = ACC;
       ctx.lineWidth = 1;

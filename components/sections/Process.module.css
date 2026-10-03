@@ -1,0 +1,166 @@
+.section {
+  position: relative;
+  border-top: 1px solid var(--line);
+}
+
+.pin {
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: 76px var(--gutter) 64px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 14px;
+  color: var(--fg-dim);
+}
+
+.body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr minmax(240px, 30%);
+  align-items: center;
+  gap: 4vw;
+  min-height: 0;
+}
+
+/* janela que mostra 3 palavras: anterior / atual / próxima */
+.window {
+  --h: clamp(52px, 8.4vw, 170px);
+  height: calc(var(--h) * 3);
+  overflow: hidden;
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.22) 22%, #000 38%, #000 62%, rgba(0, 0, 0, 0.22) 78%, transparent 100%);
+}
+.track {
+  padding-top: var(--h);
+  will-change: transform;
+}
+.word {
+  height: var(--h);
+  font-size: var(--h);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+.word::after {
+  content: "↓";
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.2em;
+  vertical-align: top;
+  margin-left: 0.4em;
+  color: var(--accent);
+}
+.word:last-child::after {
+  content: "●";
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.art {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1;
+  border: 1px solid var(--line);
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 1;
+}
+.art * {
+  vector-effect: non-scaling-stroke;
+}
+.art > g {
+  opacity: 0;
+  transform: scale(0.92);
+  transform-origin: 100px 100px;
+  transition: opacity 0.5s, transform 0.8s var(--ease-out);
+}
+.fill {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+.node {
+  fill: var(--bg);
+}
+
+.descs {
+  display: grid;
+}
+.descs p {
+  grid-area: 1 / 1;
+  margin: 0;
+  font-size: clamp(16px, 1.4vw, 20px);
+  line-height: 1.4;
+  color: var(--fg-dim);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s, transform 0.6s var(--ease-out);
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.steps {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.steps li {
+  color: var(--mute);
+  transition: color 0.3s;
+}
+.progress {
+  height: 1px;
+  background: var(--line);
+  position: relative;
+}
+.progress i {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+}
+
+/* etapa ativa (definida via data-stage durante o scroll) */
+.section[data-stage="0"] [data-i="0"],
+.section[data-stage="1"] [data-i="1"],
+.section[data-stage="2"] [data-i="2"],
+.section[data-stage="3"] [data-i="3"],
+.section[data-stage="4"] [data-i="4"] {
+  opacity: 1;
+  transform: none;
+  color: var(--fg);
+}
+
+@media (max-width: 860px) {
+  .body {
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: 24px;
+  }
+  .window {
+    --h: 13vw;
+  }
+  .side {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+  .art {
+    width: 110px;
+    flex: none;
+  }
+  .stepName {
+    display: none;
+  }
+}

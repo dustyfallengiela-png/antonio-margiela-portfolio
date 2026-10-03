@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- AM / monograma — preto, off-white e o ponto laranja de "SYSTEM / ONLINE" -->
+  <rect width="64" height="64" fill="#0a0a09"/>
+  <g transform="translate(-1 0)">
+  <path fill="#ecebe5" fill-rule="evenodd" d="M5 51 14.2 13h8.6L32 51h-7.4l-1.7-7.6h-9.8L11.4 51H5Zm9.6-13.4h6.8L18 22.4l-3.4 15.2Z"/>
+  <path fill="#ecebe5" d="M33.5 51V13h8.8l5.2 20 5.2-20H61v38h-6.4V25.6L49.9 44h-4.8l-4.7-18.4V51h-6.9Z"/>
+  </g>
+  <rect x="53" y="4" width="7" height="5" fill="#ff5a1f"/>
+</svg>

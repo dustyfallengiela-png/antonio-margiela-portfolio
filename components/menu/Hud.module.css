@@ -1,0 +1,170 @@
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  color: var(--fg-dim);
+}
+
+.tl,
+.tr,
+.bl,
+.br {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.tl {
+  top: 22px;
+  left: var(--gutter);
+}
+.tr {
+  top: 22px;
+  right: var(--gutter);
+  align-items: flex-end;
+  text-align: right;
+}
+.bl {
+  bottom: 22px;
+  left: var(--gutter);
+}
+.br {
+  bottom: 22px;
+  right: calc(var(--gutter) + 56px);
+  align-items: flex-end;
+  text-align: right;
+}
+
+.coords {
+  font-variant-numeric: tabular-nums;
+}
+
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+  background: var(--accent);
+  vertical-align: 1px;
+  animation: blink 2.4s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.available {
+  color: var(--fg);
+  transition: color 0.4s;
+}
+:global([data-mode="contact"]) .available {
+  color: var(--accent);
+}
+
+/* ---------- régua de seleção ---------- */
+.ruler {
+  position: absolute;
+  left: var(--gutter);
+  top: 64%;
+  height: 130px;
+}
+.ticks {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.ticks i {
+  display: block;
+  width: 5px;
+  height: 1px;
+  background: var(--line-strong);
+}
+.ticks i[data-major] {
+  width: 10px;
+  background: var(--fg-dim);
+}
+.marker {
+  position: absolute;
+  left: 0;
+  top: calc(var(--pos) * 100%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg);
+  transform: translateY(-50%);
+  transition: top 0.5s var(--ease-out);
+  white-space: nowrap;
+}
+.marker b {
+  display: block;
+  width: 16px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* ---------- marcas de registro ---------- */
+.cross {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  opacity: 0.45;
+}
+.cross::before,
+.cross::after {
+  content: "";
+  position: absolute;
+  background: var(--fg-dim);
+}
+.cross::before {
+  left: 5px;
+  top: 0;
+  width: 1px;
+  height: 11px;
+}
+.cross::after {
+  top: 5px;
+  left: 0;
+  width: 11px;
+  height: 1px;
+}
+.c1 {
+  top: 18%;
+  left: 16%;
+}
+.c2 {
+  top: 18%;
+  right: 16%;
+}
+.c3 {
+  bottom: 16%;
+  left: 16%;
+}
+.c4 {
+  bottom: 16%;
+  right: 16%;
+}
+
+@media (max-width: 1024px) {
+  .ruler {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .tr .coords,
+  .br > span:last-child,
+  .cross {
+    display: none;
+  }
+  .tl,
+  .tr {
+    top: 16px;
+  }
+  .bl,
+  .br {
+    bottom: 16px;
+  }
+}

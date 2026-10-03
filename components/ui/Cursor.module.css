@@ -1,0 +1,131 @@
+.root {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .root {
+    display: block;
+  }
+}
+:global(html[data-cursor-hidden]) .root {
+  opacity: 0;
+}
+
+.cross,
+.frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+  will-change: transform;
+  mix-blend-mode: difference;
+  color: #ecebe5;
+}
+
+/* ---------- crosshair ---------- */
+.cross i,
+.cross::before,
+.cross::after {
+  position: absolute;
+  display: block;
+}
+/* ponto central */
+.cross i {
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  background: currentColor;
+  transition: transform 0.3s var(--ease-out);
+}
+/* hastes: 4 segmentos com respiro no centro */
+.cross::before,
+.cross::after {
+  content: "";
+  transition: opacity 0.25s, transform 0.4s var(--ease-out);
+}
+.cross::before {
+  width: 17px;
+  height: 1px;
+  margin: -0.5px 0 0 -8.5px;
+  background: linear-gradient(90deg, currentColor 0 5px, transparent 5px 12px, currentColor 12px);
+}
+.cross::after {
+  width: 1px;
+  height: 17px;
+  margin: -8.5px 0 0 -0.5px;
+  background: linear-gradient(180deg, currentColor 0 5px, transparent 5px 12px, currentColor 12px);
+}
+.cross[data-state="hover"]::before,
+.cross[data-state="hover"]::after {
+  opacity: 0;
+  transform: scale(0.4);
+}
+.cross[data-state="text"]::before {
+  opacity: 0;
+}
+.cross[data-state="text"]::after {
+  height: 20px;
+  margin-top: -10px;
+  background: currentColor;
+}
+.cross[data-state="text"] i {
+  transform: scale(0);
+}
+
+/* ---------- cantoneiras ---------- */
+.frame {
+  --s: 12px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.frame[data-state="hover"] {
+  --s: 40px;
+  opacity: 1;
+}
+.frame[data-down] {
+  --s: 30px;
+}
+.frame i {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border: 0 solid currentColor;
+  transition: transform 0.45s var(--ease-out);
+}
+.tl {
+  border-top-width: 1px !important;
+  border-left-width: 1px !important;
+  transform: translate(calc(var(--s) / -2), calc(var(--s) / -2));
+}
+.tr {
+  border-top-width: 1px !important;
+  border-right-width: 1px !important;
+  transform: translate(calc(var(--s) / 2 - 7px), calc(var(--s) / -2));
+}
+.bl {
+  border-bottom-width: 1px !important;
+  border-left-width: 1px !important;
+  transform: translate(calc(var(--s) / -2), calc(var(--s) / 2 - 7px));
+}
+.br {
+  border-bottom-width: 1px !important;
+  border-right-width: 1px !important;
+  transform: translate(calc(var(--s) / 2 - 7px), calc(var(--s) / 2 - 7px));
+}
+
+.label {
+  position: absolute;
+  left: 26px;
+  top: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s, transform 0.4s var(--ease-out);
+}
+.frame[data-label] .label {
+  opacity: 1;
+  transform: none;
+}

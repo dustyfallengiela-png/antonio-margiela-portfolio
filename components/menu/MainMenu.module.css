@@ -1,0 +1,365 @@
+.root {
+  position: fixed;
+  inset: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--bg);
+  isolation: isolate;
+}
+.root[data-exiting] {
+  pointer-events: none;
+}
+
+.bg {
+  position: absolute;
+  inset: -30px;
+  will-change: transform;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 44% 56% at 50% 54%, rgba(10, 10, 9, 0.92) 0%, rgba(10, 10, 9, 0.6) 55%, transparent 100%);
+}
+
+.stageWrap {
+  position: absolute;
+  inset: 0;
+  /* só o conteúdo real do palco captura o ponteiro — o resto deixa passar
+     para os mockups do estado SERVIÇOS */
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+  perspective: 1400px;
+  padding: clamp(56px, 8vh, 80px) var(--gutter);
+}
+
+.fit {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transform: scale(var(--fit, 1));
+  transform-origin: 50% 50%;
+}
+
+.stage > * {
+  pointer-events: auto;
+}
+.stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ---------- globo ---------- */
+.globe {
+  position: relative;
+  width: clamp(170px, 34vh, 360px);
+  aspect-ratio: 1;
+  margin-bottom: calc(clamp(170px, 34vh, 360px) * -0.1);
+  will-change: transform;
+}
+.globeCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.splash {
+  position: absolute;
+  left: 76%;
+  top: 34%;
+}
+
+/* ---------- título ---------- */
+.titleBlock {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.name {
+  margin: 0;
+  font-weight: 800;
+  /* enorme, mas limitado pela largura E pela altura; o fit em JS garante o resto */
+  font-size: clamp(40px, min(9.2vw, 16vh), 196px);
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  white-space: nowrap;
+  user-select: none;
+}
+/* spans inline preservam o kerning; viram inline-block só na desmontagem */
+.char {
+  display: inline;
+}
+.split .char {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+.split .space {
+  display: inline-block;
+  width: 0.24em;
+}
+
+.subtitle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.8em;
+  max-width: 100%;
+  margin: clamp(12px, 2vh, 22px) auto 0;
+  color: var(--fg-dim);
+}
+.sep {
+  color: var(--mute);
+}
+
+/* ---------- menu ---------- */
+.menu {
+  position: relative;
+  width: min(600px, 100%);
+  margin-top: clamp(20px, 4.4vh, 50px);
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.row:first-child {
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* indicador que desliza entre os itens */
+.selector {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(236, 235, 229, 0.075), rgba(236, 235, 229, 0.02) 55%, transparent);
+  box-shadow: inset 0 1px 0 rgba(236, 235, 229, 0.05), inset 0 -1px 0 rgba(236, 235, 229, 0.05);
+  transition: transform 0.45s var(--ease-out), height 0.45s var(--ease-out), background 0.3s;
+}
+.selector i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 2px;
+  height: 44%;
+  background: var(--accent);
+  transform: translateY(-50%);
+  transition: height 0.3s var(--ease-out);
+}
+.selector[data-picked] {
+  background: linear-gradient(90deg, rgba(255, 90, 31, 0.16), rgba(255, 90, 31, 0.03) 60%, transparent);
+}
+.selector[data-picked] i {
+  height: 100%;
+}
+
+.item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 46px auto 1fr;
+  align-items: center;
+  width: 100%;
+  padding: clamp(6px, 1vh, 9px) 16px;
+  font-size: clamp(15px, 1.2vw, 18px);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-align: left;
+  color: rgba(236, 235, 229, 0.4);
+  transition: color 0.35s;
+}
+.item[data-active] {
+  color: var(--fg);
+}
+
+.index {
+  color: var(--mute);
+  transition: color 0.35s;
+}
+.item[data-active] .index {
+  color: var(--accent);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+}
+
+.text {
+  transition: letter-spacing 0.5s var(--ease-out), color 0.2s;
+}
+.item[data-active] .text {
+  letter-spacing: 0.055em;
+}
+
+.bracket {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.5s var(--ease-out);
+}
+.bl {
+  transform: translateX(10px);
+}
+.br {
+  transform: translateX(-10px);
+}
+.item[data-active] .bracket {
+  opacity: 1;
+  transform: none;
+}
+/* "pressionar" ao selecionar */
+.item[data-picked] .bl {
+  transform: translateX(4px);
+}
+.item[data-picked] .br {
+  transform: translateX(-4px);
+}
+.item[data-picked] .text {
+  color: var(--accent);
+}
+
+.meta {
+  justify-self: end;
+  font-size: 10px;
+  color: var(--mute);
+  white-space: nowrap;
+}
+
+.primary {
+  font-size: clamp(17px, 1.45vw, 21px);
+  font-weight: 600;
+  padding-block: clamp(10px, 1.6vh, 14px);
+  color: rgba(236, 235, 229, 0.62);
+}
+
+/* log da transição */
+.log {
+  position: absolute;
+  top: 6px;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  visibility: hidden;
+  opacity: 0;
+}
+.logLine {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--line);
+  color: var(--fg);
+  opacity: 0;
+}
+.ok {
+  color: var(--accent);
+  opacity: 0;
+}
+.logBar {
+  position: relative;
+  height: 1px;
+  margin-top: 4px;
+  background: var(--line);
+}
+.logBar i {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* dica de teclado — só aparece para quem usa as setas */
+.kbd {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  translate: -50% 8px;
+  color: var(--fg-dim);
+  opacity: 0;
+  transition: opacity 0.6s, translate 0.6s var(--ease-out);
+  white-space: nowrap;
+}
+.kbd[data-on] {
+  opacity: 0.75;
+  translate: -50% 0;
+}
+
+/* ---------- mobile: comportamento próprio ---------- */
+@media (max-width: 720px) {
+  .stageWrap {
+    padding: 56px var(--gutter) 52px;
+  }
+  .fit {
+    transform-origin: 50% 40%;
+  }
+  .stage {
+    width: 100%;
+    align-items: flex-start;
+    transform: none !important;
+  }
+  .globe {
+    width: 132px;
+    margin: 0 0 6px -14px;
+  }
+  .globe .splash {
+    left: 92%;
+    top: 44%;
+    width: calc(100vw - 170px);
+    white-space: normal;
+  }
+  .titleBlock {
+    text-align: left;
+  }
+  .name {
+    white-space: normal;
+    font-size: 16.5vw;
+    line-height: 0.86;
+  }
+  .subtitle {
+    justify-content: flex-start;
+    margin-left: 0;
+  }
+  .subEn,
+  .sep {
+    display: none;
+  }
+  .menu {
+    width: 100%;
+    margin-top: 26px;
+    border-top: 1px solid var(--line);
+  }
+  .row {
+    border-bottom: 1px solid var(--line);
+  }
+  .row:first-child {
+    margin-bottom: 0;
+  }
+  .item {
+    grid-template-columns: 34px auto 1fr;
+    padding: 13px 4px 13px 10px;
+    font-size: 17px;
+  }
+  .primary {
+    font-size: 17px;
+    padding-block: 15px;
+  }
+  .meta,
+  .kbd {
+    display: none;
+  }
+  .vignette {
+    background: linear-gradient(180deg, rgba(10, 10, 9, 0.25), rgba(10, 10, 9, 0.85) 45%, rgba(10, 10, 9, 0.92));
+  }
+}

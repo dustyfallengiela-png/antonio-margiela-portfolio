@@ -1,0 +1,379 @@
+.root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Cada preview só anima quando ativo */
+.layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s var(--ease-out), visibility 0s linear 0.6s;
+}
+.layer *,
+.layer *::before,
+.layer *::after {
+  animation-play-state: paused !important;
+}
+.layer[data-on] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s var(--ease-out), visibility 0s;
+}
+.layer[data-on] *,
+.layer[data-on] *::before,
+.layer[data-on] *::after {
+  animation-play-state: running !important;
+}
+
+/* ============ START ============ */
+.start {
+  perspective: 600px;
+  overflow: hidden;
+}
+.floor {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: -40%;
+  height: 90%;
+  transform: rotateX(72deg);
+  transform-origin: 50% 0;
+  background-image: linear-gradient(rgba(236, 235, 229, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(236, 235, 229, 0.16) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 60%);
+  animation: floor 3s linear infinite;
+}
+@keyframes floor {
+  to {
+    background-position: 0 64px;
+  }
+}
+.horizon {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  margin-top: 90px;
+  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+}
+.scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 90, 31, 0.5), transparent);
+  animation: scan 5s var(--ease-io) infinite;
+}
+@keyframes scan {
+  0% {
+    top: 8%;
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 92%;
+    opacity: 0;
+  }
+}
+
+/* ============ PROJECTS ============ */
+.projects {
+  perspective: 1200px;
+}
+.win {
+  position: absolute;
+  width: clamp(200px, 21vw, 360px);
+  opacity: 0.5;
+  transition: transform 1.1s var(--ease-out);
+}
+.w1 {
+  left: 4%;
+  top: 12%;
+  transform: translate3d(-60px, 0, 0) rotateY(24deg);
+  animation: bob 7s ease-in-out infinite;
+}
+.w2 {
+  left: 3%;
+  bottom: 12%;
+  transform: translate3d(-60px, 0, 0) rotateY(18deg);
+  animation: bob 8s ease-in-out -3s infinite;
+}
+.w3 {
+  right: 4%;
+  top: 16%;
+  transform: translate3d(60px, 0, 0) rotateY(-24deg);
+  animation: bob 7.5s ease-in-out -1s infinite;
+}
+.w4 {
+  right: 4%;
+  bottom: 12%;
+  width: clamp(180px, 17vw, 280px);
+  transform: translate3d(60px, 0, 0) rotateY(-16deg);
+  animation: bob 9s ease-in-out -5s infinite;
+}
+.projects[data-on] .w1,
+.projects[data-on] .w2 {
+  transform: translate3d(0, 0, 0) rotateY(20deg);
+}
+.projects[data-on] .w3,
+.projects[data-on] .w4 {
+  transform: translate3d(0, 0, 0) rotateY(-20deg);
+}
+@keyframes bob {
+  50% {
+    margin-top: -14px;
+  }
+}
+
+/* ============ SERVICES ============ */
+.services svg {
+  width: 100%;
+  height: 100%;
+}
+.link {
+  fill: none;
+  stroke: rgba(236, 235, 229, 0.3);
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+}
+.services[data-on] .link {
+  animation: draw 1.4s var(--ease-out) forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.packet {
+  fill: var(--accent);
+}
+.node rect {
+  fill: var(--bg);
+  stroke: var(--fg);
+  stroke-width: 1;
+}
+.node text {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  fill: var(--fg-dim);
+}
+
+/* ============ ABOUT ============ */
+.portrait {
+  position: absolute;
+  right: 8vw;
+  top: 60%;
+  width: clamp(120px, 11vw, 180px);
+  margin: 0;
+  opacity: 0.75;
+}
+.figure {
+  aspect-ratio: 3 / 4;
+  border: 1px solid var(--line-strong);
+  /* silhueta em retícula (halftone) — cabeça + ombros */
+  background-image: radial-gradient(circle, rgba(236, 235, 229, 0.55) 0.9px, transparent 1.3px);
+  background-size: 6px 6px;
+  -webkit-mask-image: radial-gradient(circle at 50% 38%, #000 0 19%, transparent 19.5%),
+    radial-gradient(ellipse 48% 30% at 50% 100%, #000 0 99%, transparent 100%);
+  mask-image: radial-gradient(circle at 50% 38%, #000 0 19%, transparent 19.5%),
+    radial-gradient(ellipse 48% 30% at 50% 100%, #000 0 99%, transparent 100%);
+  animation: halftone 8s linear infinite;
+}
+@keyframes halftone {
+  to {
+    background-position: 6px 6px;
+  }
+}
+.crop {
+  position: absolute;
+  inset: -8px -8px 26px;
+  border: 1px solid var(--line-strong);
+  -webkit-mask: linear-gradient(#000 0 0) top left / 14px 14px no-repeat, linear-gradient(#000 0 0) top right / 14px 14px no-repeat,
+    linear-gradient(#000 0 0) bottom left / 14px 14px no-repeat, linear-gradient(#000 0 0) bottom right / 14px 14px no-repeat;
+  mask: linear-gradient(#000 0 0) top left / 14px 14px no-repeat, linear-gradient(#000 0 0) top right / 14px 14px no-repeat,
+    linear-gradient(#000 0 0) bottom left / 14px 14px no-repeat, linear-gradient(#000 0 0) bottom right / 14px 14px no-repeat;
+}
+.portrait figcaption {
+  margin-top: 12px;
+  color: var(--mute);
+  font-size: 10px;
+}
+.quote {
+  position: absolute;
+  left: 7vw;
+  top: 22%;
+  margin: 0;
+  max-width: 24vw;
+}
+.quote p {
+  margin: 0 0 16px;
+  font-size: clamp(20px, 2.1vw, 34px);
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: rgba(236, 235, 229, 0.55);
+}
+.quote em {
+  font-style: normal;
+  color: var(--accent);
+}
+.quote cite {
+  font-style: normal;
+  color: var(--mute);
+  font-size: 10px;
+}
+.about[data-on] .quote {
+  animation: rise 1s var(--ease-out) both;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* ============ LAB ============ */
+.field {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(236, 235, 229, 0.22) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 45%, transparent 22%, #000 60%, transparent 90%);
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 45%, transparent 22%, #000 60%, transparent 90%);
+  animation: drift 14s linear infinite;
+}
+@keyframes drift {
+  to {
+    background-position: 22px 44px;
+  }
+}
+.exp {
+  position: absolute;
+  color: var(--fg-dim);
+  font-size: 10px;
+  padding-left: 14px;
+}
+.exp::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 1px;
+  background: var(--accent);
+}
+.e1 {
+  left: 8vw;
+  top: 30%;
+}
+.e2 {
+  right: 9vw;
+  top: 62%;
+}
+.e3 {
+  left: 10vw;
+  bottom: 22%;
+  text-transform: none;
+  color: var(--mute);
+}
+
+/* ============ CONTACT ============ */
+.contact {
+  overflow: hidden;
+}
+.avail {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg-dim);
+}
+.avail i {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  animation: blinkDot 1.4s steps(1) infinite;
+}
+@keyframes blinkDot {
+  50% {
+    opacity: 0.2;
+  }
+}
+.marquee {
+  position: absolute;
+  left: 0;
+  right: 0;
+  white-space: nowrap;
+  font-size: clamp(56px, 11vw, 180px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.marquee[data-row="0"] {
+  top: 4%;
+}
+.marquee[data-row="1"] {
+  bottom: -3%;
+}
+.marquee > div {
+  display: inline-block;
+  animation: marquee 26s linear infinite;
+}
+.marquee[data-row="1"] > div {
+  animation-direction: reverse;
+}
+.marquee span {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(236, 235, 229, 0.075);
+  padding-right: 0.4em;
+}
+.marquee em {
+  font-style: normal;
+  color: var(--accent);
+  -webkit-text-stroke: 0;
+  font-size: 0.16em;
+  opacity: 0.6;
+  vertical-align: middle;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 720px) {
+  .win,
+  .portrait,
+  .exp {
+    display: none;
+  }
+  .quote {
+    left: auto;
+    right: var(--gutter);
+    top: 18%;
+    max-width: 50vw;
+    text-align: right;
+    opacity: 0.6;
+  }
+  .w1 {
+    display: block;
+    left: auto;
+    right: -20%;
+    top: 30%;
+    width: 70vw;
+  }
+}

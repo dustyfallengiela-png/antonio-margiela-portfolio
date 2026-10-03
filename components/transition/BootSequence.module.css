@@ -1,0 +1,86 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: all;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 var(--gutter);
+}
+
+.log {
+  width: min(560px, 100%);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.line {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  opacity: 0;
+}
+.ok {
+  color: var(--mute);
+  opacity: 0;
+}
+
+.welcome {
+  margin-top: 18px;
+  font-size: clamp(48px, 9vw, 120px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  opacity: 0;
+}
+
+.foot {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--fg-dim);
+}
+.bar {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+  position: relative;
+}
+.bar i {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.curtain {
+  position: absolute;
+  inset: 0;
+  background: var(--fg);
+  color: var(--bg);
+  transform: translateY(100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 28px var(--gutter);
+}
+.curtain span {
+  opacity: 0;
+}

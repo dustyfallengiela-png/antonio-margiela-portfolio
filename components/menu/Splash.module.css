@@ -1,0 +1,89 @@
+.splash {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  white-space: nowrap;
+  color: var(--accent);
+}
+
+/* ponto de ancoragem + linha guia, como anotação em prancha técnica */
+.leader {
+  position: relative;
+  width: clamp(28px, 4vw, 56px);
+  height: 1px;
+  margin-right: 10px;
+  background: linear-gradient(90deg, rgba(255, 90, 31, 0.9), rgba(255, 90, 31, 0.35));
+  transform-origin: left;
+  animation: draw 0.7s var(--ease-out) 0.5s both;
+}
+.leader i {
+  position: absolute;
+  left: -3px;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  animation: ping 2.4s ease-out 1.2s infinite;
+}
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+@keyframes ping {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 90, 31, 0.5);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 8px rgba(255, 90, 31, 0);
+  }
+}
+
+.text {
+  display: inline-flex;
+  row-gap: 4px;
+  align-items: center;
+  gap: 0;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.tag {
+  padding: 1px 4px;
+  margin-right: 8px;
+  border: 1px solid rgba(255, 90, 31, 0.5);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+
+.caret {
+  display: inline-block;
+  width: 6px;
+  height: 11px;
+  margin-left: 3px;
+  background: var(--accent);
+  animation: blink 1s steps(1) infinite;
+}
+.caret[data-typing] {
+  animation: none;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .text {
+    flex-wrap: wrap;
+  }
+}
+
+.splash:hover .text {
+  color: var(--fg);
+}
+.splash:hover .caret {
+  background: var(--fg);
+}

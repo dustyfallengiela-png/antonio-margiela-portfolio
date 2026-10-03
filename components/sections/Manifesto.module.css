@@ -1,0 +1,158 @@
+.section {
+  position: relative;
+}
+
+.pin {
+  position: relative;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px var(--gutter) 70px;
+  overflow: hidden;
+}
+
+.metaTop,
+.metaBottom {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  justify-content: space-between;
+  color: var(--fg-dim);
+}
+.metaTop {
+  top: 76px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.metaBottom {
+  bottom: 22px;
+  justify-content: center;
+}
+
+.stack {
+  display: grid;
+  position: relative;
+  z-index: 1;
+}
+.a,
+.b {
+  grid-area: 1 / 1;
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(52px, 10.4vw, 196px);
+  letter-spacing: -0.04em;
+  line-height: 0.86;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+}
+.b {
+  font-size: clamp(46px, 9.6vw, 180px);
+}
+
+.line {
+  position: relative;
+  display: block;
+  width: fit-content;
+}
+.struck {
+  margin-left: 0.9em;
+}
+.b .line:nth-child(2) {
+  margin-left: 0.5em;
+}
+.b .line:nth-child(3) {
+  margin-left: 1.4em;
+}
+
+.strike {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: 50%;
+  height: 0.07em;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--fg);
+}
+
+.globe {
+  position: absolute;
+  right: 4vw;
+  bottom: 12vh;
+  width: clamp(140px, 22vw, 340px);
+  aspect-ratio: 1;
+  opacity: 0.85;
+}
+.globeCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.arrow {
+  display: inline-block;
+  animation: nudge 1.6s var(--ease-io) infinite;
+}
+@keyframes nudge {
+  50% {
+    transform: translateY(4px);
+  }
+}
+.counter {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.counter i {
+  display: block;
+  width: 80px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+@media (max-width: 720px) {
+  .a,
+  .b {
+    line-height: 0.96;
+  }
+  .a {
+    font-size: 13.4vw;
+  }
+  .b {
+    font-size: 12.6vw;
+  }
+  .struck,
+  .b .line:nth-child(2),
+  .b .line:nth-child(3) {
+    margin-left: 0;
+  }
+  .metaTop span:last-child {
+    display: none;
+  }
+  .globe {
+    width: 46vw;
+    right: -8vw;
+    bottom: 16vh;
+    opacity: 0.5;
+  }
+  .outline {
+    -webkit-text-stroke-width: 1px;
+  }
+}

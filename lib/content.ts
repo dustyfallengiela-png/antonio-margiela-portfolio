@@ -56,42 +56,62 @@ export const PROCESS = [
 ];
 
 export type Project = {
+  id: string;
   name: string;
   category: string;
   year: string;
   summary: string;
   stack: string[];
-  tone: string; // cor pontual do mockup
-  href: string;
+  /** "live": publicado; "soon": em pré-lançamento (sem link) */
+  status: "live" | "soon";
+  /** site publicado */
+  url?: string;
+  /** repositório público no GitHub (privados ficam sem link) */
+  repo?: string;
+  /** o site permite ser exibido dentro da janela (iframe)? */
+  embeddable?: boolean;
+  /** capturas emendadas da rolagem do site (public/projects) */
+  preview?: { desktop: string; mobile: string };
 };
 
+// Projetos reais do GitHub (dustyfallengiela-png).
 export const PROJECTS: Project[] = [
   {
-    name: "NORTHWIND STUDIO",
-    category: "Website institucional",
-    year: "2026",
-    summary: "Site editorial com navegação cinematográfica e CMS headless.",
-    stack: ["Next.js", "GSAP", "Sanity"],
-    tone: "#ff5a1f",
-    href: "#",
-  },
-  {
-    name: "LEDGER / OPS",
-    category: "Sistema web",
-    year: "2025",
-    summary: "Painel operacional em tempo real para times financeiros.",
-    stack: ["React", "Node", "Postgres"],
-    tone: "#d7ff3a",
-    href: "#",
-  },
-  {
-    name: "ATLAS LAUNCH",
+    id: "new-alpha",
+    name: "NEW ALPHA",
     category: "Landing page",
-    year: "2025",
-    summary: "Landing de lançamento com experiência 3D e foco em conversão.",
-    stack: ["Next.js", "Three.js", "Vercel"],
-    tone: "#8fb3ff",
-    href: "#",
+    year: "2026",
+    summary:
+      "Landing page de lançamento de um guia digital para homens acima dos 40 — narrativa, oferta e conversão em uma única página.",
+    stack: ["React", "Vite", "Tailwind CSS"],
+    status: "live",
+    url: "https://new-alpha-zeta.vercel.app",
+    repo: "https://github.com/dustyfallengiela-png/new-alpha",
+    embeddable: true,
+    preview: { desktop: "/projects/new-alpha-desktop.webp", mobile: "/projects/new-alpha-mobile.webp" },
+  },
+  {
+    id: "psiorienta",
+    name: "PSIORIENTA",
+    category: "Site institucional",
+    year: "2026",
+    summary:
+      "Site oficial da formação em Transtornos de Personalidade da PsiOrienta — conteúdo clínico denso organizado em uma experiência editorial.",
+    stack: ["Next.js", "GSAP", "Lenis", "Tailwind CSS"],
+    status: "live",
+    url: "https://psiorienta-site-v2.vercel.app",
+    // o site bloqueia exibição em iframe (X-Frame-Options): mostra a captura
+    embeddable: false,
+    preview: { desktop: "/projects/psiorienta-desktop.webp", mobile: "/projects/psiorienta-mobile.webp" },
+  },
+  {
+    id: "maldito",
+    name: "MALDITO.",
+    category: "E-commerce",
+    year: "2026",
+    summary: "Loja de camisetas oversized estampadas, com visualização de produto em 3D. Em pré-lançamento.",
+    stack: ["Next.js", "Tailwind CSS", "model-viewer (3D)"],
+    status: "soon",
   },
 ];
 
